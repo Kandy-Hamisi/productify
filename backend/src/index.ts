@@ -14,6 +14,7 @@ const app = express();
 app.use(
   cors({
     origin: ENV.FRONTEND_URL,
+    credentials: true,
   }),
 );
 app.use(clerkMiddleware()); //auth object will be attached to the req
