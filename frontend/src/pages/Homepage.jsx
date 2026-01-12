@@ -7,9 +7,9 @@ import { Link } from "react-router";
 import ProductCard from "../components/ProductCard.jsx";
 
 const Homepage = () => {
-  const { data: products, isFetching, error } = useProducts();
+  const { data: products, isLoading, error } = useProducts();
 
-  if (isFetching) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner />;
 
   if (error) {
     return (
