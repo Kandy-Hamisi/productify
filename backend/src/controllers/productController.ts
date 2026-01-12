@@ -7,10 +7,10 @@ import { getAuth } from "@clerk/express";
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const products = await queries.getAllProducts();
-    res.status(200).json(products);
+    return res.status(200).json(products);
   } catch (err) {
     console.error("Error fetching products: ", err);
-    res.status(500).json({ error: "Failed to fetch products" });
+    return res.status(500).json({ error: "Failed to fetch products" });
   }
 };
 
@@ -22,10 +22,10 @@ export const getProductById = async (req: Request, res: Response) => {
 
     if (!product) return res.status(404).json({ error: "Product not found" });
 
-    res.status(200).json(product);
+    return res.status(200).json(product);
   } catch (error) {
     console.error("Error fetching product: ", error);
-    res.status(500).json({ error: "Failed to fetch product" });
+    return res.status(500).json({ error: "Failed to fetch product" });
   }
 };
 
@@ -37,10 +37,10 @@ export const getMyProducts = async (req: Request, res: Response) => {
     if (!userId) return res.status(401).json({ error: "Unauthorized" });
 
     const products = await queries.getProductsByUserId(userId);
-    res.status(200).json(products);
+    return res.status(200).json(products);
   } catch (error) {
     console.error("Error fetching user products: ", error);
-    res.status(500).json({ error: "Failed to fetch user products" });
+    return res.status(500).json({ error: "Failed to fetch user products" });
   }
 };
 
@@ -53,8 +53,7 @@ export const createProduct = async (req: Request, res: Response) => {
     const { title, description, price, imageUrl } = req.body;
 
     if (!title || !description || !price || !imageUrl) {
-      res.status(400).json({ error: "Missing required fields" });
-      return;
+      return res.status(400).json({ error: "Missing required fields" });
     }
 
     const product = await queries.createProduct({
@@ -65,10 +64,10 @@ export const createProduct = async (req: Request, res: Response) => {
       imageUrl,
     });
 
-    res.status(201).json(product);
+    return res.status(201).json(product);
   } catch (error) {
     console.error("Error creating product: ", error);
-    res.status(500).json({ error: "Failed to create product" });
+    return res.status(500).json({ error: "Failed to create product" });
   }
 };
 
@@ -84,12 +83,13 @@ export const updateProduct = async (req: Request, res: Response) => {
     // check if product exists and belongs to user
     const existingProduct = await queries.getProductById(id);
     if (!existingProduct) {
-      res.status(404).json({ error: "Product not found" });
-      return;
+      return res.status(404).json({ error: "Product not found" });
     }
 
     if (existingProduct.userId !== userId) {
-      res.status(403).json({ error: "You can only update your own products" });
+      return res
+        .status(403)
+        .json({ error: "You can only update your own products" });
     }
 
     const updatedProduct = await queries.updateProduct(id, {
@@ -98,10 +98,10 @@ export const updateProduct = async (req: Request, res: Response) => {
       price,
       imageUrl,
     });
-    res.status(200).json(updatedProduct);
+    return res.status(200).json(updatedProduct);
   } catch (error) {
     console.error("Error updating product: ", error);
-    res.status(500).json({ error: "Failed to update product" });
+    return res.status(500).json({ error: "Failed to update product" });
   }
 };
 
@@ -116,18 +116,19 @@ export const deleteProduct = async (req: Request, res: Response) => {
     //  check if product exists and belongs to user
     const existingProduct = await queries.getProductById(id);
     if (!existingProduct) {
-      res.status(404).json({ error: "Product not found" });
-      return;
+      return res.status(404).json({ error: "Product not found" });
     }
 
     if (existingProduct.userId !== userId) {
-      res.status(403).json({ error: "You can only delete your own products" });
+      return res
+        .status(403)
+        .json({ error: "You can only delete your own products" });
     }
 
     const deletedProduct = await queries.deleteProduct(id);
-    res.status(200).json(deletedProduct);
+    return res.status(200).json(deletedProduct);
   } catch (error) {
     console.error("Error deleting product: ", error);
-    res.status(500).json({ error: "Failed to delete product" });
+    return res.status(500).json({ error: "Failed to delete product" });
   }
 };

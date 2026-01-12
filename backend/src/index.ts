@@ -27,5 +27,5 @@ app.use("/api/products", productRoutes);
 app.use("/api/comments", commentRoutes);
 
 const server = app.listen(ENV.PORT, () => {
-  console.log("Server is running on port 3000");
+  console.log(`Server listening on port ${ENV.PORT}`);
 });

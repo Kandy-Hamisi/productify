@@ -47,7 +47,7 @@ export const createProduct = async (data: NewProduct) => {
 };
 
 export const getAllProducts = async () => {
-  db.query.products.findMany({
+  return db.query.products.findMany({
     with: { user: true },
     orderBy: (products, { desc }) => [desc(products.createdAt)],
   });
