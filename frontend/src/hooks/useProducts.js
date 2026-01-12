@@ -3,6 +3,7 @@ import {
   createProduct,
   deleteProduct,
   getAllProducts,
+  getMyProducts,
   getProductById,
   updateProduct,
 } from "../lib/api";
