@@ -14,7 +14,7 @@ const app = express();
 app.use(
   cors({
     origin: ENV.FRONTEND_URL,
-    credentials: true,
+    credentials: true, // allows frontend to send cookies to the backend so that we can authenticate the user
   }),
 );
 app.use(clerkMiddleware()); //auth object will be attached to the req

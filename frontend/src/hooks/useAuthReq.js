@@ -14,7 +14,7 @@ function useAuthReq() {
 
     const interceptor = api.interceptors.request.use(async (config) => {
       if (isSignedIn) {
-        const token = await getToken();
+        const token = await getToken(); //get the token from clerk
         if (token) {
           config.headers.Authorization = token;
         }
