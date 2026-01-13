@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { ENV } from "./config/env";
 import { clerkMiddleware } from "@clerk/express";
-import path from "path"
+import path from "path";
 
 // import application routes
 import userRoutes from "./routes/userRoutes";
@@ -28,15 +28,15 @@ app.use("/api/products", productRoutes);
 app.use("/api/comments", commentRoutes);
 
 if (ENV.NODE_ENV === "production") {
-    const __dirname = path.resolve();;
+  const __dirname = path.resolve();
 
-    // serve static files from frontend/dist
-    app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  // serve static files from frontend/dist
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-    // handle Single Page Application routing - send all non API routes to index.html - react application
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-    });
+  // handle Single Page Application routing - send all non API routes to index.html - react application
+  app.get("/{*any}", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+  });
 }
 
 const server = app.listen(ENV.PORT, () => {
